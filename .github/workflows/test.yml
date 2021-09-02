@@ -1,0 +1,47 @@
+name: Test Custom Rules
+
+on:
+  push:
+    branches:
+      - '**'        # matches every branch
+      - '!main'     # excludes main
+
+jobs:
+  unit_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 15
+
+      - name: Install snyk-iac-rules
+        run: npm i -g snyk-iac-rules
+
+      - name: Run unit tests
+        run: snyk-iac-rules test
+
+  contract_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 15
+
+      - name: Install snyk-iac-rules
+        run: npm i -g snyk-iac-rules
+
+      - name: Build bundle
+        run: snyk-iac-rules build .
+
+      - name: Run contract with Snyk to check Infrastructure as Code files for issues
+        continue-on-error: true
+        uses: snyk/actions/iac@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --rules=bundle.tar.gz
+
