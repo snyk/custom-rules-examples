@@ -33,9 +33,9 @@ An example workflow for adding a new rule would involve:
 7. Waiting for the bundle to be published to an OCI registry
 8. Configuring a separate repo to use `snyk` together with the custom rules in this repo by configuring the following environment variables:
 ```
-export OCI_REGISTRY_URL=<OCI registry url without a protocol>
-export OCI_REGISTRY_USERNAME=<OCI registry username>
-export OCI_REGISTRY_PASSWORD=<OCI registry password>
+export SNYK_CFG_OCI_REGISTRY_URL=<OCI registry url without a protocol>
+export SNYK_CFG_OCI_REGISTRY_USERNAME=<OCI registry username>
+export SNYK_CFG_OCI_REGISTRY_PASSWORD=<OCI registry password>
 ```
 
 ## CI/CD
