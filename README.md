@@ -15,6 +15,8 @@ The example rules in this repo include:
 3. [./rules/CUSTOM-RULE-3](https://docs.snyk.io/products/snyk-infrastructure-as-code/custom-rules/getting-started-with-the-sdk/examples#example-with-logical-or): A rule using logical OR that checks if a Terraform `aws_redshift_cluster` has at least an `owner` tag or a `description` tag
 4. [./rules/CUSTOM-RULE-4](https://docs.snyk.io/products/snyk-infrastructure-as-code/custom-rules/getting-started-with-the-sdk/examples#example-with-strings): A rule using strings that checks if a Terraform `aws_redshift_cluster` has at least an `owner` tag or a `description` tag and the `owner` tag does not belong to the `@corp-domain.com` domain
 5. [./rules/CUSTOM-RULE-5](https://docs.snyk.io/products/snyk-infrastructure-as-code/custom-rules/getting-started-with-the-sdk/examples#example-with-xor): A rule using XOR that checks if a Terraform `aws_redshift_cluster` has either an `owner` tag or a `serviceDescription` tag, depending on the `type`
+6. `./rules/CUSTOM-RULE-6`: A rule using grouped resources that checks if a Kubernetes RoleBinding configuration was defined on a set of namespaces configured in a denylist
+7. [./rules/CUSTOM-RULE-7](https://docs.snyk.io/products/snyk-infrastructure-as-code/custom-rules/getting-started-with-the-sdk/examples#examples-with-grouped-resources): A rule using grouped resources that checks if a Kubernetes ConfigMap configuration contains keys located in a denylist
 
 ## Usage
 The existing rules can be:
