@@ -17,6 +17,9 @@ The example rules in this repo include:
 5. [./rules/CUSTOM-RULE-5](https://docs.snyk.io/products/snyk-infrastructure-as-code/custom-rules/getting-started-with-the-sdk/examples#example-with-xor): A rule using XOR that checks if a Terraform `aws_redshift_cluster` has either an `owner` tag or a `serviceDescription` tag, depending on the `type`
 6. `./rules/CUSTOM-RULE-6`: A rule using grouped resources that checks if a Kubernetes RoleBinding configuration was defined on a set of namespaces configured in a denylist
 7. [./rules/CUSTOM-RULE-7](https://docs.snyk.io/products/snyk-infrastructure-as-code/custom-rules/getting-started-with-the-sdk/examples#examples-with-grouped-resources): A rule using grouped resources that checks if a Kubernetes ConfigMap configuration contains keys located in a denylist
+8. `./rules/CUSTOM-RULE-8`: A rule that flags up if an IAM Role is missing one of the required tags: `owner`, `description` or `type`
+9. `./rules/CUSTOM-RULE-9`: A rule that flags up if a Vendor or Service does not have at least an `owneralternate` or a `ticketgroup` tag
+10. `./rules/CUSTOM-RULE-10`: A rule that flags up if an IAM user is missing one of the required tags: `owner`, `description` or `type`
 
 ## Usage
 The existing rules can be:
