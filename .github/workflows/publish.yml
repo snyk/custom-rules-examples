@@ -30,4 +30,22 @@ jobs:
       - name: Publish rules
         run: snyk-iac-rules push --registry $OCI_REGISTRY_URL bundle.tar.gz
         env:
-          OCI_REGISTRY_URL: ${{ secrets.OCI_REGISTRY_URL }}
+          OCI_REGISTRY_URL: "${{ secrets.OCI_REGISTRY_NAME }}:v1"
+
+      - name: Update Snyk
+        run: |
+          curl --location --request PATCH 'https://api.snyk.io/v3/groups/0f304da1-8552-4a8f-a1bd-38262b382d81/settings/iac/?version=2021-11-03~beta' \
+          --header 'Content-Type: application/vnd.api+json' \
+          --header 'Authorization: token ${{ secrets.SNYK_TOKEN }}' \
+          --data-raw '{
+            "data": {
+                  "type": "iac_settings",
+                  "attributes": {
+                    "custom_rules": {
+                      "oci_registry_url": "https://registry-1.${{ secrets.OCI_REGISTRY_NAME }}",
+                      "oci_registry_tag": "v1",
+                      "is_enabled": true
+                    }
+                }
+            }
+          }'
