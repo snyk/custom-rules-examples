@@ -34,7 +34,7 @@ jobs:
 
       - name: Update Snyk
         run: |
-          curl --location --request PATCH 'https://api.snyk.io/v3/groups/0f304da1-8552-4a8f-a1bd-38262b382d81/settings/iac/?version=2021-11-03~beta' \
+          curl --location --request PATCH 'https://api.snyk.io/v3/groups/b2374863-df81-46ba-85e2-d76b2b8dac4f/settings/iac/?version=2021-11-03~beta' \
           --header 'Content-Type: application/vnd.api+json' \
           --header 'Authorization: token ${{ secrets.SNYK_TOKEN }}' \
           --data-raw '{
