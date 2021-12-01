@@ -34,18 +34,18 @@ jobs:
 
       - name: Update Snyk
         run: |
-          curl --location --request PATCH 'https://api.snyk.io/v3/groups/b2374863-df81-46ba-85e2-d76b2b8dac4f/settings/iac/?version=2021-11-03~beta' \
+          curl --location --request PATCH 'https://api.snyk.io/v3/orgs/${{ secrets.SNYK_ORG_PUBLIC_ID }}/settings/iac/?version=2021-11-03~beta' \
           --header 'Content-Type: application/vnd.api+json' \
           --header 'Authorization: token ${{ secrets.SNYK_TOKEN }}' \
           --data-raw '{
-            "data": {
+          "data": {
                   "type": "iac_settings",
                   "attributes": {
-                    "custom_rules": {
+                      "custom_rules": {
                       "oci_registry_url": "https://registry-1.${{ secrets.OCI_REGISTRY_NAME }}",
-                      "oci_registry_tag": "v1",
-                      "is_enabled": true
-                    }
-                }
-            }
+                          "oci_registry_tag": "v1",
+                          "is_enabled": true
+                      }
+                  }
+              }
           }'
