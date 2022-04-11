@@ -1,0 +1,207 @@
+{
+	"apiVersion": "apps/v1",
+	"kind": "Deployment",
+	"metadata": {
+		"labels": {
+			"app.kubernetes.io/instance": "RELEASE-NAME",
+			"app.kubernetes.io/managed-by": "Helm",
+			"app.kubernetes.io/name": "nginx",
+			"helm.sh/chart": "nginx-9.9.4"
+		},
+		"name": "RELEASE-NAME-nginx"
+	},
+	"spec": {
+		"replicas": 1,
+		"selector": {
+			"matchLabels": {
+				"app.kubernetes.io/instance": "RELEASE-NAME",
+				"app.kubernetes.io/name": "nginx"
+			}
+		},
+		"strategy": {
+			"rollingUpdate": {},
+			"type": "RollingUpdate"
+		},
+		"template": {
+			"metadata": {
+				"labels": {
+					"app.kubernetes.io/instance": "RELEASE-NAME",
+					"app.kubernetes.io/managed-by": "Helm",
+					"app.kubernetes.io/name": "nginx",
+					"helm.sh/chart": "nginx-9.9.4"
+				}
+			},
+			"spec": {
+				"affinity": {
+					"nodeAffinity": null,
+					"podAffinity": null,
+					"podAntiAffinity": {
+						"preferredDuringSchedulingIgnoredDuringExecution": [
+							{
+								"podAffinityTerm": {
+									"labelSelector": {
+										"matchLabels": {
+											"app.kubernetes.io/instance": "RELEASE-NAME",
+											"app.kubernetes.io/name": "nginx"
+										}
+									},
+									"namespaces": [
+										"default"
+									],
+									"topologyKey": "kubernetes.io/hostname"
+								},
+								"weight": 1
+							}
+						]
+					}
+				},
+				"automountServiceAccountToken": false,
+				"containers": [
+					{
+						"env": [
+							{
+								"name": "BITNAMI_DEBUG",
+								"value": "false"
+							}
+						],
+						"image": "docker.io/bitnami/nginx:1.21.6-debian-10-r48",
+						"imagePullPolicy": "IfNotPresent",
+						"livenessProbe": {
+							"failureThreshold": 6,
+							"periodSeconds": 10,
+							"successThreshold": 1,
+							"tcpSocket": {
+								"port": "http"
+							},
+							"timeoutSeconds": 5
+						},
+						"name": "nginx",
+						"ports": [
+							{
+								"containerPort": 8080,
+								"name": "http"
+							}
+						],
+						"readinessProbe": {
+							"failureThreshold": 3,
+							"initialDelaySeconds": 5,
+							"periodSeconds": 5,
+							"successThreshold": 1,
+							"tcpSocket": {
+								"port": "http"
+							},
+							"timeoutSeconds": 3
+						},
+						"resources": {
+							"limits": {},
+							"requests": {}
+						},
+						"volumeMounts": [
+							{
+								"mountPath": "/opt/bitnami/nginx/conf/server_blocks",
+								"name": "nginx-server-block-paths"
+							},
+							{
+								"mountPath": "/opt/bitnami/nginx/conf/server_blocks/ldap",
+								"name": "nginx-server-block-ldap"
+							}
+						]
+					},
+					{
+						"env": [
+							{
+								"name": "NGINXLDAP_PORT_NUMBER",
+								"value": "8888"
+							},
+							{
+								"name": "NGINXLDAP_LDAP_URI",
+								"value": ""
+							},
+							{
+								"name": "NGINXLDAP_LDAP_BASE_DN",
+								"value": ""
+							},
+							{
+								"name": "NGINXLDAP_LDAP_BIND_DN",
+								"value": ""
+							},
+							{
+								"name": "NGINXLDAP_LDAP_BIND_PASSWORD",
+								"valueFrom": {
+									"secretKeyRef": {
+										"key": "ldap-daemon-ldap-bind-password",
+										"name": "RELEASE-NAME-nginx-ldap-daemon"
+									}
+								}
+							},
+							{
+								"name": "NGINXLDAP_LDAP_FILTER",
+								"value": ""
+							},
+							{
+								"name": "NGINXLDAP_HTTP_REALM",
+								"value": ""
+							},
+							{
+								"name": "NGINXLDAP_HTTP_COOKIE_NAME",
+								"value": ""
+							}
+						],
+						"image": "docker.io/bitnami/nginx-ldap-auth-daemon:0.20200116.0-debian-10-r615",
+						"imagePullPolicy": "IfNotPresent",
+						"livenessProbe": {
+							"failureThreshold": 6,
+							"periodSeconds": 10,
+							"successThreshold": 1,
+							"tcpSocket": {
+								"port": "ldap-daemon"
+							},
+							"timeoutSeconds": 5
+						},
+						"name": "ldap-daemon",
+						"ports": [
+							{
+								"containerPort": 8888,
+								"name": "ldap-daemon"
+							}
+						],
+						"readinessProbe": {
+							"failureThreshold": 3,
+							"initialDelaySeconds": 5,
+							"periodSeconds": 5,
+							"successThreshold": 1,
+							"tcpSocket": {
+								"port": "ldap-daemon"
+							},
+							"timeoutSeconds": 3
+						}
+					}
+				],
+				"hostIPC": false,
+				"hostNetwork": false,
+				"serviceAccountName": "default",
+				"shareProcessNamespace": false,
+				"volumes": [
+					{
+						"configMap": {
+							"items": [
+								{
+									"key": "server-blocks-paths.conf",
+									"path": "server-blocks-paths.conf"
+								}
+							],
+							"name": "RELEASE-NAME-nginx-server-block"
+						},
+						"name": "nginx-server-block-paths"
+					},
+					{
+						"name": "nginx-server-block-ldap",
+						"secret": {
+							"secretName": "RELEASE-NAME-nginx-ldap-daemon"
+						}
+					}
+				]
+			}
+		}
+	}
+}

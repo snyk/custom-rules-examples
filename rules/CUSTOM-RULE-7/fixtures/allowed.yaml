@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: allowed
-  namespace: ns
-data:
-  username: not-secret
